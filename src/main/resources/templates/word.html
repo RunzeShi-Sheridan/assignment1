@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Abc Blocks</title>
@@ -20,8 +20,21 @@
 
 <hr>
 
-<!-- initial state: show heart -->
-<img src="/images/block_heart.png" alt="heart block" style="height: 120px;">
+<!-- output area -->
+<div>
+    <!-- If images exist, show them -->
+    <div th:if="${images != null}">
+        <img th:each="img : ${images}"
+             th:src="${img}"
+             alt="block"
+             style="height: 120px; margin-right: 10px;">
+    </div>
+
+    <!-- Otherwise (initial state), show heart -->
+    <div th:unless="${images != null}">
+        <img src="/images/block_heart.png" alt="heart block" style="height: 120px;">
+    </div>
+</div>
 
 <!-- Footer -->
 <footer style="margin-top: 40px;">
