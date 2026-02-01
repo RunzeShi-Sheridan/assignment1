@@ -10,7 +10,10 @@
 <!-- label + input -->
 <form method="post" action="/process">
     <label for="word">Enter a word (1–10 chars):</label>
-    <input id="word" name="word" type="text" maxlength="10">
+    <p th:if="${error}" style="color: red;">
+        <span th:text="${error}"></span>
+    </p>
+    <input id="word" name="word" type="text">
     <button type="submit">Process</button>
 </form>
 <!-- reset button -->
@@ -24,15 +27,31 @@
 <div>
     <!-- If images exist, show them -->
     <div th:if="${images != null}">
-        <img th:each="img : ${images}"
+    <span th:each="img : ${images}">
+
+        <!-- Normal letter block -->
+        <img th:if="${img != 'SPACE'}"
              th:src="${img}"
              alt="block"
-             style="height: 120px; margin-right: 10px;">
+             style="height: 120px;
+             margin-right: 10px;">
+
+        <!-- Space placeholder -->
+        <span th:if="${img == 'SPACE'}"
+              style="display: inline-block;
+                     width: 120px;
+                     height: 120px;
+                     margin-right: 10px;">
+        </span>
+
+    </span>
     </div>
 
     <!-- Otherwise (initial state), show heart -->
     <div th:unless="${images != null}">
-        <img src="/images/block_heart.png" alt="heart block" style="height: 120px;">
+        <img src="/images/block_heart.png"
+             alt="heart block"
+             style="height: 120px;">
     </div>
 </div>
 

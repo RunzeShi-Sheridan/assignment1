@@ -24,12 +24,26 @@ public class HomeController {
     @PostMapping("/process")
     public String processWord(@RequestParam String word, Model model) {
 
+        String trimmedWord = word.trim();
+
+        // Validation: non-blank and length between 1-10
+        if (trimmedWord.isEmpty() || trimmedWord.length() > 10) {
+            model.addAttribute("error",
+                    "Please enter between 1 and 10 characters.");
+            return "word";
+        }
+
         List<String> images = new ArrayList<>();
+
         // convert the input word to upper then break it into character use toCharArray()
-        for (char c : word.toUpperCase().toCharArray()) {
+        for (char c : trimmedWord.toUpperCase().toCharArray()) {
             if (c >= 'A' && c <= 'Z') {
                 images.add("/images/block_" + c + ".png");
+            } else {
+                // Non-letter characters are replaced as spaces
+                images.add("SPACE");
             }
+
         }
         // Store the image path in the model
         model.addAttribute("images", images);
