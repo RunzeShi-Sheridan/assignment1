@@ -35,4 +35,11 @@ public class HomeController {
         model.addAttribute("images", images);
         return "word";
     }
+
+    @GetMapping("/reset")
+    public String reset(Model model) {
+        // Clear the images attribute so the page returns to its initial state
+        model.addAttribute("images", null);
+        return "word";
+    }
 }
