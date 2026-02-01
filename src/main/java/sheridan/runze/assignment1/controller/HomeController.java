@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
+import sheridan.runze.assignment1.logic.WordBlockLogic;
 import java.util.List;
-import java.util.ArrayList;
 
 @Controller
 public class HomeController {
@@ -26,26 +26,16 @@ public class HomeController {
 
         String trimmedWord = word.trim();
 
-        // Validation: non-blank and length between 1-10
-        if (trimmedWord.isEmpty() || trimmedWord.length() > 10) {
+        // Validation handled by logic class
+        if (!WordBlockLogic.isValid(trimmedWord)) {
             model.addAttribute("error",
                     "Please enter between 1 and 10 characters.");
             return "word";
         }
 
-        List<String> images = new ArrayList<>();
+        List<String> images =
+                WordBlockLogic.buildImageList(trimmedWord);
 
-        // convert the input word to upper then break it into character use toCharArray()
-        for (char c : trimmedWord.toUpperCase().toCharArray()) {
-            if (c >= 'A' && c <= 'Z') {
-                images.add("/images/block_" + c + ".png");
-            } else {
-                // Non-letter characters are replaced as spaces
-                images.add("SPACE");
-            }
-
-        }
-        // Store the image path in the model
         model.addAttribute("images", images);
         return "word";
     }
